@@ -9,6 +9,10 @@ long ten_pow(int n){
 }
 
 char* my_itoa(int nmbr){
+char* zero = malloc(sizeof(char));
+*zero = '0';
+  if(nmbr == 0)
+    return zero; 
   char* str = calloc(12, sizeof(char));
   str[11] = '\0';
   int sign = 1;
@@ -43,9 +47,11 @@ char* my_itoa(int nmbr){
  // free(str);
   return res;
 }
+
 /*
 int main(){
-  printf("STR: %s", my_itoa(-890));
+  printf("STR: %s", my_itoa(0));
 }
 */
+
 
