@@ -11,6 +11,10 @@ void  my_putc(const char *c){
   write(1, c , sizeof(char));
 }
 
+void  my_puts(const char *c){
+  write(1, c, (strlen(c))*sizeof(char));
+}
+
 int zero(const char** c, va_list* args){
    (*c)++;
    while(**c == '0'){};//skipping zeroes
@@ -37,10 +41,15 @@ void print_status(format_status* s){
 void print_format_arg(format_status* fs, va_list** args){
   char* par;
   char* par_result;
+  int val_list_negative = 0;
   if(fs->s)
     par = va_arg(**args, char*);
-  else if(fs->d)
+  else if(fs->d){
     par = my_itoa(va_arg(**args, int));
+    if (par[0] == '-'){
+      val_list_negative = 1;
+    }
+  }
   else
     return;
 
@@ -52,18 +61,32 @@ void print_format_arg(format_status* fs, va_list** args){
       fill_c = ' ';
     int shift = fs->padding - strlen(par);
     if(shift > 0){
-      // printf("SHIFT: %d\n", shift);
       par_result = (char*) calloc((strlen(par)+shift+1),sizeof(char));
-      memset(par_result, fill_c, shift);
-      par_result[shift] = '\0';
-      strcat(par_result, par);
+      if(fs->minus){
+        char* filling = (char*)calloc(shift+1, sizeof(char));
+        memset(filling, fill_c, shift);
+        filling[shift] = '\0';
+        strcpy(par_result, par);
+        strcat(par_result, filling);
+      }
+      else{
+        memset(par_result, fill_c, shift);
+        par_result[shift] = '\0';
+        strcat(par_result, par); 
+
+        if(val_list_negative && (fill_c == '0')){
+          par_result[0] = '-';
+          par_result[strlen(par_result) - strlen(par)] = '0';
+        }
+      }
     }
     else
       par_result = par;
   }
   else
     par_result = par;
-  printf("%s", par_result);
+  my_puts(par_result);
+  // printf("%s", par_result);
 }
 
 int parse_integer(const char** str){
@@ -82,7 +105,8 @@ int percent(const char** c, va_list** args){
   format_status status = {0};
   char cur = **c; 
   if(**c == '%'){
-    printf("%c", **c); 
+    my_putc(*c);
+    // printf("%c", **c); 
     (*c)++;
     return 1;
   }
@@ -125,7 +149,8 @@ int check(const char** c, va_list** args){
     (*c)++;
     return percent(c, args);
   }
-  printf("%c", **c); 
+  my_putc(*c);
+   //printf("%c", **c); 
   (*c)++;
   return 1;
 }
@@ -133,39 +158,50 @@ int check(const char** c, va_list** args){
 int my_printf(const char *format, ...){
    va_list args;
    va_start(args, format);
-
    va_list* args_ptr = &args;
    va_list** args_dptr = &args_ptr;
-
-
-   //
-    // va_arg(**args_dptr, int);
-    // va_arg(**args_dptr, int);
-    // char* val = va_arg(**args_dptr, char*);
-    // va_arg(**args_dptr, int);
-    // printf("%s", val);
-    // return 0;
-   //
 
    const char** c = &format; 
    while (check(c, args_dptr)){};
 } 
 // int main(){
   
-//  //  printf("%05d %s\n %%%%" ,121, "was padded on 10");
-//  //  char i_str[20];
-//  // // itoa(5, i_str, 10);
-//  //  printf("MYITOA: %s\n", my_itoa(5));
+// //  //  printf("%05d %s\n %%%%" ,121, "was padded on 10");
+// //  //  char i_str[20];
+// //  // // itoa(5, i_str, 10);
+// //  //  printf("MYITOA: %s\n", my_itoa(5));
   
-//  //  printf("Padding of %s: [%05d]\n %d", "five", -42);
-//  //  printf("Padding of %s: [%5d]\n", "five", -42);
-//  //  printf("Padding of %s: [%-----5d]\n", "five", -42);
+// //  //  printf("Padding of %s: [%05d]\n %d", "five", -42);
+// //  //  printf("Padding of %s: [%5d]\n", "five", -42);
+// //  //  printf("Padding of %s: [%-----5d]\n", "five", -42);
   
-//   test_val = malloc(sizeof(char));
-//   *test_val = 'E';
-//    // my_printf("3%-0dA\n%5dB%-08sCD%%%d[d]", 12, 13, "LOL",17);
-//   //my_printf("3%-03dA\n%dB%-0sCD%%%d[d]", 12, 13, "LOL",17);
+// //    // my_printf("3%-0dA\n%5dB%-08sCD%%%d[d]", 12, 13, "LOL",17);
+// //   //my_printf("3%-03dA\n%dB%-0sCD%%%d[d]", 12, 13, "LOL",17);
   
+
+// //   // my_printf("%s\n", "Hello Printf");
+// //   // my_printf("We need 100%% of %s\n", "use case");
+// //   // my_printf("It's %s's %s (%s)\n", "iGor", "phone", "TEXT");
+// //   // my_printf("[%10s] [%4s] [%8s] [%12s]\n", "THIS", "IS", "PADDED", "TEXT");
+// //   // my_printf("%d\n", 42);
+// //   // my_printf("%d %s\n", 42, "is the answer");
+// //   // my_printf("%010d %s\n", 42, "was padded on 10");
+// //   // my_printf("%10d %s\n", 42, "was also padded using spaces");
+
+// //   // my_printf("Padding of %s: [%-5d]\n", "five", -42);
+
+// //   // printf("Padding of %s: [%05d]\n", "five", -42);
+// //   // printf("Padding of %s: [%5d]\n", "five", -42);
+// //   // printf("Padding of %s: [%-5d]\n", "five", -42);
+
+//  my_printf("%s\n", "Hello Printf");
+//   my_printf("We need 100%% of %s\n", "use case");
+//   my_printf("It's %s's %s (%s)\n", "iGor", "phone", "TEXT");
+//   my_printf("[%10s] [%4s] [%8s] [%12s]\n", "THIS", "IS", "PADDED", "TEXT");
+//   my_printf("%d\n", 42);
+//   my_printf("%d %s\n", 42, "is the answer");
+//   my_printf("%010d %s\n", 42, "was padded on 10");
+//   my_printf("%10d %s\n", 42, "was also padded using spaces");
 
 //   my_printf("%s\n", "Hello Printf");
 //   my_printf("We need 100%% of %s\n", "use case");
@@ -176,4 +212,7 @@ int my_printf(const char *format, ...){
 //   my_printf("%010d %s\n", 42, "was padded on 10");
 //   my_printf("%10d %s\n", 42, "was also padded using spaces");
 
+//     printf("Padding of %s: [%05d]\n", "five", -42);
+//   printf("Padding of %s: [%5d]\n", "five", -42);
+//   printf("Padding of %s: [%-5d]\n", "five", -42);
 // }
