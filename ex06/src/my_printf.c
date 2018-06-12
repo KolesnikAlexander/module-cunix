@@ -6,19 +6,12 @@
 #include <stdarg.h>
 char* my_itoa(int);
 
-char* test_val;
 void  my_putc(const char *c){
   write(1, c , sizeof(char));
 }
 
 void  my_puts(const char *c){
   write(1, c, (strlen(c))*sizeof(char));
-}
-
-int zero(const char** c, va_list* args){
-   (*c)++;
-   while(**c == '0'){};//skipping zeroes
-   (*c)--;
 }
 
 typedef struct status{
@@ -28,15 +21,6 @@ typedef struct status{
   int d;
   int s;
 } format_status;
-
-void print_status(format_status* s){
-  printf("\n----STATUS----\n");
-  printf("MINUS: %d\n", s->minus);
-  printf("ZERO: %d\n", s->zero);
-  printf("PADDING: %d\n", s->padding);
-  printf("D: %d\n", s->d);
-  printf("S: %d\n", s->s);
-}
 
 void print_format_arg(format_status* fs, va_list** args){
   char* par;
@@ -50,8 +34,6 @@ void print_format_arg(format_status* fs, va_list** args){
       val_list_negative = 1;
     }
   }
-  else
-    return;
 
   if(fs->padding){
     char fill_c;
@@ -86,7 +68,6 @@ void print_format_arg(format_status* fs, va_list** args){
   else
     par_result = par;
   my_puts(par_result);
-  // printf("%s", par_result);
 }
 
 int parse_integer(const char** str){
@@ -101,12 +82,12 @@ int parse_integer(const char** str){
   *str=*str+i;
   return atoi(substr);
 }
+
 int percent(const char** c, va_list** args){
   format_status status = {0};
   char cur = **c; 
   if(**c == '%'){
     my_putc(*c);
-    // printf("%c", **c); 
     (*c)++;
     return 1;
   }
@@ -138,7 +119,6 @@ int percent(const char** c, va_list** args){
     (*c)++;
   }
   print_format_arg(&status, args);
-  //print_status(&status);
   return 1;
 }
 
@@ -150,7 +130,6 @@ int check(const char** c, va_list** args){
     return percent(c, args);
   }
   my_putc(*c);
-   //printf("%c", **c); 
   (*c)++;
   return 1;
 }
@@ -164,55 +143,3 @@ int my_printf(const char *format, ...){
    const char** c = &format; 
    while (check(c, args_dptr)){};
 } 
-// int main(){
-  
-// //  //  printf("%05d %s\n %%%%" ,121, "was padded on 10");
-// //  //  char i_str[20];
-// //  // // itoa(5, i_str, 10);
-// //  //  printf("MYITOA: %s\n", my_itoa(5));
-  
-// //  //  printf("Padding of %s: [%05d]\n %d", "five", -42);
-// //  //  printf("Padding of %s: [%5d]\n", "five", -42);
-// //  //  printf("Padding of %s: [%-----5d]\n", "five", -42);
-  
-// //    // my_printf("3%-0dA\n%5dB%-08sCD%%%d[d]", 12, 13, "LOL",17);
-// //   //my_printf("3%-03dA\n%dB%-0sCD%%%d[d]", 12, 13, "LOL",17);
-  
-
-// //   // my_printf("%s\n", "Hello Printf");
-// //   // my_printf("We need 100%% of %s\n", "use case");
-// //   // my_printf("It's %s's %s (%s)\n", "iGor", "phone", "TEXT");
-// //   // my_printf("[%10s] [%4s] [%8s] [%12s]\n", "THIS", "IS", "PADDED", "TEXT");
-// //   // my_printf("%d\n", 42);
-// //   // my_printf("%d %s\n", 42, "is the answer");
-// //   // my_printf("%010d %s\n", 42, "was padded on 10");
-// //   // my_printf("%10d %s\n", 42, "was also padded using spaces");
-
-// //   // my_printf("Padding of %s: [%-5d]\n", "five", -42);
-
-// //   // printf("Padding of %s: [%05d]\n", "five", -42);
-// //   // printf("Padding of %s: [%5d]\n", "five", -42);
-// //   // printf("Padding of %s: [%-5d]\n", "five", -42);
-
-//  my_printf("%s\n", "Hello Printf");
-//   my_printf("We need 100%% of %s\n", "use case");
-//   my_printf("It's %s's %s (%s)\n", "iGor", "phone", "TEXT");
-//   my_printf("[%10s] [%4s] [%8s] [%12s]\n", "THIS", "IS", "PADDED", "TEXT");
-//   my_printf("%d\n", 42);
-//   my_printf("%d %s\n", 42, "is the answer");
-//   my_printf("%010d %s\n", 42, "was padded on 10");
-//   my_printf("%10d %s\n", 42, "was also padded using spaces");
-
-//   my_printf("%s\n", "Hello Printf");
-//   my_printf("We need 100%% of %s\n", "use case");
-//   my_printf("It's %s's %s (%s)\n", "iGor", "phone", "TEXT");
-//   my_printf("[%10s] [%4s] [%8s] [%12s]\n", "THIS", "IS", "PADDED", "TEXT");
-//   my_printf("%d\n", 42);
-//   my_printf("%d %s\n", 42, "is the answer");
-//   my_printf("%010d %s\n", 42, "was padded on 10");
-//   my_printf("%10d %s\n", 42, "was also padded using spaces");
-
-//     printf("Padding of %s: [%05d]\n", "five", -42);
-//   printf("Padding of %s: [%5d]\n", "five", -42);
-//   printf("Padding of %s: [%-5d]\n", "five", -42);
-// }
