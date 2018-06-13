@@ -50,6 +50,7 @@ void print_format_arg(format_status* fs, va_list** args){
         filling[shift] = '\0';
         strcpy(par_result, par);
         strcat(par_result, filling);
+        free(filling);
       }
       else{
         memset(par_result, fill_c, shift);
@@ -98,6 +99,7 @@ int percent(const char** c, va_list** args){
     if(!**c)
      return 0; 
   }
+
   if(**c == '0'){
     status.zero = 1;
     (*c)++;
@@ -114,6 +116,7 @@ int percent(const char** c, va_list** args){
     status.d = 1;
     (*c)++;
   }
+
   else if(**c == 's'){
     status.s = 1;
     (*c)++;
