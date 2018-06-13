@@ -68,40 +68,33 @@ void *list_pop(node_t **head){
   e->next = NULL;
 
 }
+
 void    *list_shift(node_t **head){
-
+  node_t* new_head = (*head)->next;
+  free((*head)->data);
+  free(*head);
+  *head = new_head;
 }
+
 void    *list_remove(node_t **head, int pos){
-
+  node_t* p = (*head)+pos;
+  if(p == *head)
+   list_shift(head);
+  if(p->next == NULL){
+    list_pop(head);
+  }
+  else{
+    (*head - 1)->data = (*head - 1)->data;
+    free((*head)->data);
+    free(*head); 
+  }
 }
 
-void    list_visitor(node_t *head, void (*fp)(void *data)){
-
+void list_visitor(node_t *head, void (*fp)(void *data)){
+  node_t* e = head;
+  while(e != NULL){
+    (*fp)(e->next);
+    e=e->next;
+  }
 }
 
-/*
-void test_destroy_noop(void *data)
-{
-  data;
-}
-
-int test_create()
-{
-  node_t  *head;
-  char    *valid;
-
-  head = list_create("test");
-  valid = head->data;
-
-  printf("LIST:\n-----\n");
-  list_print(head);
-  list_destroy(&head, &test_destroy_noop);
-  list_print(head);
-  return strcmp(valid, "test");
-}
-*/
-/*
-int main(){
-  test_create();
-}
-*/

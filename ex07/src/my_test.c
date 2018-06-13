@@ -230,15 +230,15 @@ int test_global()
 
 int main()
 {
-  // test_create();
-   //test_destroy();
-  // test_push();
-   //test_print();
-  // test_unshift();
-   test_pop();
-   //test_shift();
+ //  test_create();
+  // test_destroy();
+ //  test_push();
+  // test_print();
+ //  test_unshift();
+  // test_pop();
+  // test_shift();
    //test_remove();
-   //test_visitor();
+   test_visitor();
    //test_global();
   return (0);
 }
