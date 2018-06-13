@@ -97,7 +97,7 @@ int test_unshift()
   asprintf(&str, "head");
   head = list_create(str);
 
-  for(int i = 0; i < 10; i++)
+  for(int i = 0; i < 0; i++)
   {
     asprintf(&str, "%05d-world\n", i);
     list_unshift(&head, str);
@@ -126,7 +126,9 @@ int test_pop()
   asprintf(&str, "Test pop: ok");
   list_push(head, str);
 
+  list_print(head); 
   list_pop(&head);
+  list_print(head);
 
   list_destroy(&head, &test_destroy_push);
 
@@ -228,12 +230,12 @@ int test_global()
 
 int main()
 {
-   //test_create();
+  // test_create();
    //test_destroy();
-   test_push();
+  // test_push();
    //test_print();
-   //test_unshift();
-   //test_pop();
+  // test_unshift();
+   test_pop();
    //test_shift();
    //test_remove();
    //test_visitor();
