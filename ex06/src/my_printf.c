@@ -85,7 +85,6 @@ int parse_integer(const char** str){
 
 int percent(const char** c, va_list** args){
   format_status status = {0};
-  char cur = **c; 
   if(**c == '%'){
     my_putc(*c);
     (*c)++;
@@ -134,7 +133,7 @@ int check(const char** c, va_list** args){
   return 1;
 }
 
-int my_printf(const char *format, ...){
+void my_printf(const char *format, ...){
    va_list args;
    va_start(args, format);
    va_list* args_ptr = &args;

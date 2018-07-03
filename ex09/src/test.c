@@ -9,10 +9,7 @@
 #include <assert.h>
 #include <string.h>
 
-void test_func_noop(void *data)
-{
-  data;
-}
+void test_func_noop(__attribute__((unused)) void *data){}
 
 int               test_create()
 {
@@ -48,9 +45,6 @@ int               test_hashfunc()
 
 int test_hash_set()
 {
-  char        *key;
-  char        *data;
-
   hashtable_t *ht = hash_create(128);
 
   hash_set(ht, "key1", "Valentine", &test_func_noop);

@@ -10,7 +10,7 @@ void list_print(node_t *head){
   node_t* e = head;
   int i = 0;
   while(e!=NULL){
-       printf("%d)%s\n", i, e->data);
+       printf("%d)%s\n", i, (char*)e->data);
        e=e->next;
        i++;
   }
@@ -51,7 +51,8 @@ void  list_unshift(node_t **head, void *data){
   *head = first;
 }
 
-void nop(void* data){}
+void nop(__attribute__((unused)) void* data){}
+
 void free_data(void* data){
     free(data);
 }
@@ -66,7 +67,7 @@ node_t* list_pop_rec(node_t* node){
 }
 void *list_pop(node_t **head){
     if(!*head)
-        return;
+        return NULL;
     return list_pop_rec(*head);
 }
 
@@ -75,14 +76,16 @@ void *list_shift(node_t **head){
   free((*head)->data);
   free(*head);
   *head = new_head;
+  return *head;
 }
 
 void *list_remove(node_t **head, int pos){
   if(pos == 0)
-      list_shift(*head);
+    list_shift(head);
   node_t* p = *head;
   for(int i = 0; i < pos-1; i++)
-      p = p->next;
+    p = p->next;
+  
   else if(p->next == NULL){
     list_pop(head);
   }

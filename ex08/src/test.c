@@ -46,7 +46,7 @@ int       test_allocation()
   return (0);
 }
 
-void      remove_static(node_t *node)
+void      remove_static(__attribute__((unused)) node_t *node)
 {
   NULL;
 }

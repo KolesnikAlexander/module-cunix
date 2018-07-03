@@ -1,7 +1,7 @@
- #include<stdio.h>
- #include<stdlib.h>
- #include"binary_tree.h"
- #include <string.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include"binary_tree.h"
+#include <string.h>
 
 node_t  *allocnode(){
     node_t* node =(node_t*) malloc(sizeof(node_t));
@@ -9,6 +9,7 @@ node_t  *allocnode(){
     node->data = NULL;
     node->left = NULL;
     node->right = NULL;
+    return node;
 }
 
 node_t  *insert_rec(node_t *root, char *key, void *data){
@@ -38,13 +39,13 @@ void print_node(node_t *node){
    if(node == NULL)
        return;
    printf("Key: %s\n",node->key);
-   printf("Data: %s\n",node->data); 
+   printf("Data: %s\n",(char*) node->data); 
    if(node->left)
-      printf("Left: %s\n", node->left->key);
+      printf("Left: %s\n", (char*)node->left->key);
    else
       printf("Left: NULL\n");
    if(node->right)
-      printf("Right: %s\n", node->right->key);
+      printf("Right: %s\n", (char*)node->right->key);
    else
       printf("Right: NULL\n");
 }

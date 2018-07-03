@@ -20,20 +20,20 @@ hashtable_t *hash_create(unsigned int size){
     hashtable_t* ht = malloc(sizeof(hashtable_t));
     ht->size = size;
     void** table = calloc(size, sizeof(void*));
-    for(int i = 0; i < size; i++)
+    for(unsigned int i = 0; i < size; i++)
         table[i] = NULL;
     ht->table = table;
     return ht;
 }
 
 void hash_destroy(hashtable_t *ht, void (*fp)(void *data)){
-    for(int i = 0; i < ht->size;i++)
+    for(unsigned int i = 0; i < ht->size;i++)
         destroy_tree((node_t*)(ht->table[i]),(void (*)(node_t *))fp);
     free(ht->table);
     free(ht);
 }
 
-void hash_set(hashtable_t *ht, char *key, void *ptr, void (*fp)(void *data)){
+void hash_set(hashtable_t *ht, char *key, void *ptr, __attribute__((unused)) void (*fp)(void *data)){
     if(!ht) return;
     int bucket = hash_func(key)%(ht->size);
     ht->table[bucket] = insert(ht->table[bucket], key, ptr);

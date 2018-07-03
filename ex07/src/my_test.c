@@ -244,7 +244,7 @@ int main()
    test_pop();
    test_shift();
    test_remove();
-   //test_visitor();
-   //test_global();
+   test_visitor();
+   test_global();
   return (0);
 }

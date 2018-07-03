@@ -6,7 +6,7 @@ RM					:= rm -rf
 
 LDFLAGS			+= -L../ex08 -lbinary_tree
 
-CFLAGS				+= -Iinclude -I../ex07/include -Wall -Wextra #-Werror -g
+CFLAGS				+= -Iinclude -I../ex07/include -Wall -Wextra -Werror -g
 
 SRCS				:= $(wildcard src/*.c)
 
