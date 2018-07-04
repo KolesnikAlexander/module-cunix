@@ -76,7 +76,7 @@ void *list_shift(node_t **head){
   free((*head)->data);
   free(*head);
   *head = new_head;
-  return *head;
+	return head;
 }
 
 void *list_remove(node_t **head, int pos){
@@ -86,7 +86,7 @@ void *list_remove(node_t **head, int pos){
   for(int i = 0; i < pos-1; i++)
     p = p->next;
   
-  else if(p->next == NULL){
+  if(p->next == NULL){
     list_pop(head);
   }
   else{
@@ -95,6 +95,7 @@ void *list_remove(node_t **head, int pos){
     free((*head)->data);
     free(*head); 
   }
+	return *head;
 }
 
 void list_visitor(node_t *head, void (*fp)(void *data)){
